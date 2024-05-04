@@ -1,5 +1,5 @@
 const apiKey = '6c3581679351414b927223614240405';
-const apiURL = 'http://api.weatherapi.com/v1';
+const apiURL = 'http://api.weatherapi.com/current.json';
 
 const searchBtn = document.getElementById('searchBtn');
 const cityInput = document.getElementById('cityInput');
@@ -15,7 +15,7 @@ searchBtn.addEventListener('click', () => {
 
 // asyncronous function to get weather for city
 async function getWeather(city) {
-    const url= '${apiURL}?q=${city}&appid=${apiKey}&units=metric';
+    const url= `${apiURL}?key=${apiKey}&q=${city}&units=metric`;
     try {
         const response = await fetch(url);
         const data = await response.json();
@@ -26,6 +26,7 @@ async function getWeather(city) {
     }
 }
 
+// function to display weather
 function displayWeather (data) {
     const { name, main, weather} = data;
     const { temp, humidity } = main;
