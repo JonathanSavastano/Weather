@@ -9,10 +9,14 @@ const API_KEY = "5d24d8150c9cae72f4cd96993ca7195e"; // API key for OpenWeatherMa
 
 // function to create weather card using innerHTML
 const createWeatherCard = (cityName, weatherItem, index) => {
-     
+    // parse date string to a date object
+    const date = new Date(weatherItem.dt_txt.split(" ")[0]);
+    // format the date to be MM/DD/YYY
+    const formattedDate = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
+    
     if(index === 0) { // HTML for the main weather card
         return `<div class="details">
-                    <h2>${cityName} (${weatherItem.dt_txt.split(" ")[0]})</h2>
+                    <h2>${cityName} (${formattedDate})</h2>
                     <h6>Temperature Fahrenheit: ${((weatherItem.main.temp - 273.15) * 9/5 + 32).toFixed(2)}°F</h6>
                     <h6>Temperature Celcius: ${(weatherItem.main.temp - 273.15).toFixed(2)}°C</h6>
                     <h6>Wind: ${weatherItem.wind.speed} M/S</h6>
@@ -24,7 +28,7 @@ const createWeatherCard = (cityName, weatherItem, index) => {
                 </div>`;
     } else { // HTML for the other five day forecast card
         return `<li class="card">
-                    <h3>(${weatherItem.dt_txt.split(" ")[0]})</h3>
+                    <h2>${cityName} (${formattedDate})</h2>
                     <img src="https://openweathermap.org/img/wn/${weatherItem.weather[0].icon}@4x.png" alt="weather-icon">
                     <h6>Temp F: ${((weatherItem.main.temp - 273.15) * 9/5 + 32).toFixed(2)}°F</h6>
                     <h6>Temp C: ${(weatherItem.main.temp - 273.15).toFixed(2)}°C</h6>
