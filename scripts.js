@@ -32,6 +32,7 @@ const createWeatherCard = (cityName, weatherItem, index) => {
 }
 
 // function to get weather details (name, latitude, longitude) from our weather API
+// TODO: include temp in farenheit as well
 const getWeatherDetails = (cityName, latitude, longitude) => {
     // construct the API URL using the provided lat, lon and API_KEY
     const WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`;
@@ -71,6 +72,7 @@ const getWeatherDetails = (cityName, latitude, longitude) => {
 }
 
 // function to get city's coordinates
+// TODO: Make search bar suggest cities as the user types
 const getCityCoordinates = () => {
     const cityName = cityInput.value.trim();
     if (cityName === "") return;
