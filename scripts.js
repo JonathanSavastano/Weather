@@ -117,6 +117,49 @@ const getUserCoordinates = () => {
         });
 }
 
+// function to fetch city suggestions based on user input
+const fetchCitySuggestions = (inputValue) => {
+    const API_URL = `https://api.openweathermap.org/geo/1.0/direct?q=${inputValue}&limit=5&appid=${API_KEY}`;
+
+    fetch(API_URL)
+        .then(response => response.json())
+        .then(data => {
+            const suggestions = data.map(city => city.name);
+            updateCitySuggestions(suggestions);
+        })
+        .catch(() => {
+            console.error("Error fetching city suggestions");
+        });
+}
+
+// Function to update the city suggestions list in the UI
+const updateCitySuggestions = (suggestions) => {
+    const suggestionsList = document.querySelector(".city-suggestions");
+    suggestionsList.innerHTML = "";
+
+    suggestions.forEach(city => {
+        const suggestionItem = document.createElement("div");
+        suggestionItem.classList.add("suggestion");
+        suggestionItem.textContent = city;
+        suggestionsList.appendChild(suggestionItem);
+
+        // Add click event listener to suggestion items to populate the input field with the selected city
+        suggestionItem.addEventListener("click", () => {
+            cityInput.value = city;
+            suggestionsList.innerHTML = "";
+            getCityCoordinates();
+        });
+    });
+}
+
+// event listener for keyup event on cityInput
+cityInput.addEventListener("keyup", () => {
+    const inputValue = cityInput.value.trim();
+    if (inputValue.length >= 2) {
+        fetchCitySuggestions(inputValue);
+    }
+});
+
 locationButton.addEventListener("click", getUserCoordinates);
 searchButton.addEventListener("click", getCityCoordinates);
 cityInput.addEventListener("keyup", e => e.key === "Enter" && getCityCoordinates());
