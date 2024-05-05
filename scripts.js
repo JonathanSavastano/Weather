@@ -1,3 +1,4 @@
+// Use query selectors to access elements by their class and store them in variables
 const cityInput = document.querySelector(".city-input");
 const searchButton = document.querySelector(".search-btn");
 const locationButton = document.querySelector(".location-btn");
@@ -6,6 +7,7 @@ const weatherCardsDiv = document.querySelector(".weather-cards");
 
 const API_KEY = "5d24d8150c9cae72f4cd96993ca7195e"; // API key for OpenWeatherMap API
 
+// function to create weather card using innerHTML
 const createWeatherCard = (cityName, weatherItem, index) => {
     if(index === 0) { // HTML for the main weather card
         return `<div class="details">
@@ -29,10 +31,17 @@ const createWeatherCard = (cityName, weatherItem, index) => {
     }
 }
 
+// function to get weather details (name, latitude, longitude) from our weather API
 const getWeatherDetails = (cityName, latitude, longitude) => {
+    // construct the API URL using the provided lat, lon and API_KEY
     const WEATHER_API_URL = `https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${API_KEY}`;
 
-    fetch(WEATHER_API_URL).then(response => response.json()).then(data => {
+    // fetch weather data from the API
+    fetch(WEATHER_API_URL)
+    // parse the response as JSON
+    .then(response => response.json())
+    // process the JSON data
+    .then(data => {
         // Filter the forecasts to get only one forecast per day
         const uniqueForecastDays = [];
         const fiveDaysForecast = data.list.filter(forecast => {
@@ -61,6 +70,7 @@ const getWeatherDetails = (cityName, latitude, longitude) => {
     });
 }
 
+// function to get city's coordinates
 const getCityCoordinates = () => {
     const cityName = cityInput.value.trim();
     if (cityName === "") return;
@@ -76,6 +86,7 @@ const getCityCoordinates = () => {
     });
 }
 
+// function to get the user's coordinates
 const getUserCoordinates = () => {
     navigator.geolocation.getCurrentPosition(
         position => {
